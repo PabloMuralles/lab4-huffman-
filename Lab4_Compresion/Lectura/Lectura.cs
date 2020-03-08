@@ -26,6 +26,7 @@ namespace Lab4_Compresion.Lectura
         Caracteres caracter = null;
         public void Ingresar(string leer)
         {
+           
             using (var stream = new FileStream(leer, FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream))
@@ -49,6 +50,7 @@ namespace Lab4_Compresion.Lectura
                 }
             }
             Probabilidad();
+            Compresion.Compresion.Instance.asignar(leer);
             ArbolHuffman.Arbol Arbol = new ArbolHuffman.Arbol(Ocurrencia);
         }
         public void Probabilidad()
