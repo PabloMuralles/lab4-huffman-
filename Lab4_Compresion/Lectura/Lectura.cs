@@ -13,17 +13,22 @@ namespace Lab4_Compresion.Lectura
         List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
         ArbolHuffman.Elementos elementos = null;
         public int num_total = 0;
-        private static Lectura _instance = null;
-        public static Lectura Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new Lectura();
-                return _instance;
-            }
-        }
+        
+        private string NombreArchivo = string.Empty;
+     
         const int longitud = 1000000;
         Caracteres caracter = null;
+
+
+        public Lectura(string nombrearchivocontrolller,string leercontroller)
+        {
+            NombreArchivo = nombrearchivocontrolller;
+            Ingresar(leercontroller);
+        }
+
+
+
+
         public void Ingresar(string leer)
         {
             using (var stream = new FileStream(leer, FileMode.Open))

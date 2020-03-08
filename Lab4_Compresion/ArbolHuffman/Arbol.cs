@@ -10,6 +10,8 @@ namespace Lab4_Compresion.ArbolHuffman
 
         Dictionary<char, string> TablaPrefijos = new Dictionary<char, string>();
 
+        
+
         private List<Nodo> NodosProbabilidades = new List<Nodo>();
 
         private List<Elementos> TablaProbabilidades = new List<Elementos>();
@@ -20,6 +22,7 @@ namespace Lab4_Compresion.ArbolHuffman
         {
             TablaProbabilidades = TablaProbabilidadesLectura;
             CrearArbol();
+           
 
         }
 
