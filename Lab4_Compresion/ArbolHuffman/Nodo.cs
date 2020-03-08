@@ -8,10 +8,15 @@ namespace Lab4_Compresion.ArbolHuffman
     public class Nodo
     {
         public char Caracter;
+
         public double Probabilidad;
+
         public Nodo HijoDerecho;
+
         public Nodo HijoIzquierdo;
+
         public Nodo Padre;
+
         public int camino;
         public Nodo()
         {

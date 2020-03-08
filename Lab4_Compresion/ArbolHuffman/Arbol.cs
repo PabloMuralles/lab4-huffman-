@@ -8,7 +8,7 @@ namespace Lab4_Compresion.ArbolHuffman
     public class Arbol
     {
 
-        Dictionary<string, char> TablaPrefijos = new Dictionary<string, char>();
+        Dictionary<char, string> TablaPrefijos = new Dictionary<char, string>();
 
         private List<Nodo> NodosProbabilidades = new List<Nodo>();
 
@@ -71,7 +71,7 @@ namespace Lab4_Compresion.ArbolHuffman
                     NuevoElemento.Caracter = raiz.Caracter;
                     GenerarCodigo(raiz);
                     NuevoElemento.Prefijo = Invertir(Camino);
-                    TablaPrefijos.Add(NuevoElemento.Prefijo, NuevoElemento.Caracter);
+                    TablaPrefijos.Add(NuevoElemento.Caracter, NuevoElemento.Prefijo);
                     Camino = string.Empty;
 
                 }
