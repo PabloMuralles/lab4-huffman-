@@ -10,7 +10,8 @@ namespace Lab4_Compresion.Lectura
     {
         static Dictionary<char, Caracteres> diccionario = new Dictionary<char, Caracteres>();
         static List<byte> Frecuencia = new List<byte>();
-        List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
+         List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
+         Dictionary<char, int> elementos_enviar = new Dictionary<char, int>();
         ArbolHuffman.Elementos elementos = null;
         public int num_total = 0;
         
@@ -25,10 +26,6 @@ namespace Lab4_Compresion.Lectura
             NombreArchivo = nombrearchivocontrolller;
             Ingresar(leercontroller);
         }
-
-
-
-
         public void Ingresar(string leer)
         {
            
@@ -65,9 +62,12 @@ namespace Lab4_Compresion.Lectura
                 elementos = new ArbolHuffman.Elementos();
                 double cantidad = (Convert.ToDouble(item.Value.cantidad));
                 elementos.caracter = item.Key;
+                elementos.cantidad = Convert.ToInt32(cantidad);
+                elementos_enviar.Add(elementos.caracter,elementos.cantidad);
                 elementos.probabilidad = Convert.ToDouble((cantidad / Frecuencia.Count()));
-                Ocurrencia.Add(elementos);
+                Ocurrencia.Add(elementos);            
             }
+                Compresion.Compresion.Instance.Ocurrencia = elementos_enviar;
         }
     }
 }
