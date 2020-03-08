@@ -49,7 +49,7 @@ namespace Lab4_Compresion.Lectura
                 }
             }
             Probabilidad();
-            //ArbolHuffman.Arbol Arbol = new ArbolHuffman.Arbol(Ocurrencia);
+            ArbolHuffman.Arbol Arbol = new ArbolHuffman.Arbol(Ocurrencia);
         }
         public void Probabilidad()
         {
