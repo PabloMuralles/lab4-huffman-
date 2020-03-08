@@ -7,9 +7,8 @@ namespace Lab4_Compresion.ArbolHuffman
 {
     public class Arbol
     {
-
         Dictionary<char, string> TablaPrefijos = new Dictionary<char, string>();
-        
+      
         private List<Nodo> NodosProbabilidades = new List<Nodo>();
 
         private List<Elementos> TablaProbabilidades = new List<Elementos>();
@@ -58,7 +57,7 @@ namespace Lab4_Compresion.ArbolHuffman
 
             }
             Recorrido(Raiz);
-
+            Compresion.Compresion.Instance.Comprimir(TablaPrefijos);
         }
 
         public void Recorrido(Nodo raiz)
@@ -72,7 +71,11 @@ namespace Lab4_Compresion.ArbolHuffman
                     NuevoElemento.Caracter = raiz.Caracter;
                     GenerarCodigo(raiz);
                     NuevoElemento.Prefijo = Invertir(Camino);
-                    TablaPrefijos.Add(NuevoElemento.Caracter, NuevoElemento.Prefijo);
+
+                    TablaPrefijos.Add(Convert.ToString(NuevoElemento.Caracter), NuevoElemento.Prefijo);
+=======
+                    
+
                     Camino = string.Empty;
 
                 }
