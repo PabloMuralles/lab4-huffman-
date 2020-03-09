@@ -52,7 +52,7 @@ namespace Lab4_Compresion.Compresion
         }
         public void generarArchivoDiccionario()
         {
-            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}\archivoComprimido.huff");
+            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
             foreach (var item in Ocurrencia)
             {
               streamWriter.WriteLine("{0}",item);

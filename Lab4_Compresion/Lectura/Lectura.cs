@@ -10,7 +10,7 @@ namespace Lab4_Compresion.Lectura
     {
 
          
-         List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
+        
       
          Dictionary<char, int> elementos_enviar = new Dictionary<char, int>();
 
