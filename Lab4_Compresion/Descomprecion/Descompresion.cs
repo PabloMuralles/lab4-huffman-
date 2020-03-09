@@ -56,7 +56,19 @@ namespace Lab4_Compresion.Descomprecion
               
             }
 
-           
+            foreach (var item in Frecuencias)
+            {
+                for (int i = 0; i < item.Length; i++)
+                {
+                    var Caracteres = item.Substring(i, 1);
+                    if (Caracteres !="" || Caracteres != "[")
+                    {
+
+                    }
+                       
+
+                }
+            }
 
 
 
