@@ -76,7 +76,7 @@ namespace Lab4_Compresion.Lectura
                 elementos.caracter = item.Key;
                 elementos.cantidad = Convert.ToInt32(cantidad);
                 elementos_enviar.Add(elementos.caracter,elementos.cantidad);
-                elementos.probabilidad = Convert.ToDouble((cantidad / Frecuencia.Count()));
+                elementos.probabilidad = Convert.ToDouble(cantidad);
                 Ocurrencia.Add(elementos);            
             }
                 Compresion.Compresion.Instance.Ocurrencia = elementos_enviar;
