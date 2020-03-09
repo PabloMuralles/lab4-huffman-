@@ -14,6 +14,7 @@ namespace Lab4_Compresion.Descomprecion
         public Descompresion(string nombrearchivocontrolller, string leercontroller)
         {
             NombreArchivo = nombrearchivocontrolller;
+            Descomprimir(leercontroller);
         }
         public void Descomprimir(string leer)
         {
