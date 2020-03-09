@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace Lab4_Compresion.Descomprecion
 {
-    public class Frecuencias
+    public class TablaDescompresion
     {
         public string Caracter { get; set; }
 
-        public int  Frecuencia { get; set; }
+        public string Prefijo { get; set; }
+
     }
 }

@@ -9,16 +9,19 @@ namespace Lab4_Compresion.Descomprecion
     public class Descompresion
     {
         string NombreArchivo = string.Empty;
-
-        List<string> Frecuencias = new List<string>();
-
+         
         string TextoDescomprimir = string.Empty;
-
-       
 
          
 
-        
+        Dictionary<string, string> Caracteres = new Dictionary<string, string>();
+
+        List<Frecuencias> Frecuencias = new List<Frecuencias>();
+
+
+
+
+
         public Descompresion(string nombrearchivocontrolller, string leercontroller)
         {
             NombreArchivo = nombrearchivocontrolller;
@@ -26,52 +29,36 @@ namespace Lab4_Compresion.Descomprecion
         }
         public void Descomprimir(string leer)
         {
-            char[] CaracteresDelimitadores = { '\t', '\r', ' ' };
+          
             StreamReader TextLeer = new StreamReader(leer);
-            var Texto = TextLeer.ReadToEnd();
-            var words = Texto.Split('\n');
-            for (int i = 0; i < words.Length; i++)
-            {
-                words[i] = words[i].Trim(CaracteresDelimitadores);
-            }
+            var Texto = TextLeer.ReadLine();
 
-            for (int i = 0; i < words.Length; i++)
+            while (Texto != null)
             {
-                if (words[i] != "")
+                if(Texto.Substring(0, 1) == "0" || Texto.Substring(0, 1) == "1")
                 {
-                    string Validar = words[i].Substring(0, 1);
-                    if (Validar == "[")
-                    {
-                        Frecuencias.Add(words[i]);
-                    }
-                    else
-                    {
-                        if (Validar == "0" || Validar == "1")
-                        {
-                            TextoDescomprimir = words[i];
-                        }
-                    }
 
+                    TextoDescomprimir = Texto.Trim();
                 }
-              
-            }
-
-            foreach (var item in Frecuencias)
-            {
-                for (int i = 0; i < item.Length; i++)
+                else
                 {
-                    var Caracteres = item.Substring(i, 1);
-                    if (Caracteres !="" || Caracteres != "[")
-                    {
-
-                    }
-                       
-
+                    Texto = Texto.Trim().Replace("[", " ").Replace("]", " ");
+                    var Caracter = Texto.Split(',');
+                    Caracteres.Add(Caracter[0], Caracter[1]);
                 }
+                Texto = TextLeer.ReadLine();
+            }
+            foreach (var item in Caracteres)
+            {
+                Frecuencias NuevaFrecuencias = new Frecuencias();
+                int FrecuenciaDiccionario = Convert.ToInt32(item.Value);
+                string CaracterFrecuencia = item.Key.Trim();
+                Frecuencias.Add(new Frecuencias { Caracter = CaracterFrecuencia, Frecuencia = FrecuenciaDiccionario });
+
             }
 
+            Arbol arbol = new Arbol(Frecuencias,NombreArchivo,TextoDescomprimir);
 
-
-        }
+        }    
     }
 }
