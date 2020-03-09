@@ -10,6 +10,8 @@ namespace Lab4_Compresion.Descomprecion
     {
         string NombreArchivo = string.Empty;
 
+         
+
         const int longitud = 1000000;
         public Descompresion(string nombrearchivocontrolller, string leercontroller)
         {
@@ -18,20 +20,25 @@ namespace Lab4_Compresion.Descomprecion
         }
         public void Descomprimir(string leer)
         {
-
-            using (var stream = new FileStream(leer, FileMode.Open))
+            char[] CaracteresDelimitadores = { '\t', '\r', ' ' };
+            StreamReader TextLeer = new StreamReader(leer);
+            string Texto = TextLeer.ReadToEnd();
+            string[] words = Texto.Split('\n');
+            for (int i = 0; i < words.Length; i++)
             {
-                using (var reader = new BinaryReader(stream))
+                words[i] = words[i].Trim(CaracteresDelimitadores);
+            }
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (true)
                 {
-                    var buffer = new byte[longitud];
-                    buffer = reader.ReadBytes(longitud);
-                    foreach (byte bit in buffer)
-                    {
-                    
-                    }
+
                 }
             }
- 
+
+
+
         }
     }
 }
