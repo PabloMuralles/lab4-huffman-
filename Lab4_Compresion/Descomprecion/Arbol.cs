@@ -117,6 +117,7 @@ namespace Lab4_Compresion.Descomprecion
         }
 
 
+
         public void Escritura()
         {
             for (int i = 0; i < TextoDescomprimir.Length; i++)
