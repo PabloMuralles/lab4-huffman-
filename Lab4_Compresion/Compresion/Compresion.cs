@@ -50,13 +50,10 @@ namespace Lab4_Compresion.Compresion
         public void generarArchivoDiccionario()
         {
             StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
-            foreach (var item in Ocurrencia.Keys)
+            foreach (var item in Ocurrencia)
             {
-              streamWriter.Write("{0}",item);
-                foreach (var item2 in Ocurrencia.Values)
-                {
-                    streamWriter.Write("{0}\n", item2);
-                }
+              streamWriter.WriteLine("{0}",item);
+               
             }
             streamWriter.WriteLine($"{Datos_Comp}");
             streamWriter.Close();

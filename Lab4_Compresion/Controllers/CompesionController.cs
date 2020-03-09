@@ -11,7 +11,7 @@ namespace Lab4_Compresion.Controllers
     public class CompesionController : Controller
     {
         [HttpPost]
-        [Route("api/archivo/{nombre}")]
+        [Route("api/compress/{nombre}")]
         public async Task<IActionResult> Post(IFormFile file, string nombre)
         {
             var filePath = Path.GetTempFileName();
@@ -20,7 +20,7 @@ namespace Lab4_Compresion.Controllers
                     await file.CopyToAsync(stream);
                      Compresion.Compresion.Instance.RutaArchivos += nombre;
             Lectura.Lectura NuevoArchivo = new Lectura.Lectura(nombre,filePath);   
-            return Ok(new { count = 1, path = filePath });
+            return Ok();
         }
 
         [HttpPost]
@@ -31,10 +31,8 @@ namespace Lab4_Compresion.Controllers
             if (file.Length > 0)
                 using (var stream = new FileStream(filePath, FileMode.Create))
                     await file.CopyToAsync(stream);
-            Descomprecion.Descompresion descompresion = new Descomprecion.Descompresion(nombre,filePath);
-            Compresion.Compresion.Instance.RutaArchivos += nombre;
-            Lectura.Lectura NuevoArchivo = new Lectura.Lectura(nombre,filePath);          
-            return Ok(new { count = 1, path = filePath });
+            Descomprecion.Descompresion descompresion = new Descomprecion.Descompresion(nombre,filePath);      
+            return Ok();
 
         }
     }
