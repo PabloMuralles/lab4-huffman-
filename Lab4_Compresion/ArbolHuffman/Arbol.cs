@@ -7,9 +7,8 @@ namespace Lab4_Compresion.ArbolHuffman
 {
     public class Arbol
     {
-
-
-        Dictionary<string, string> TablaPrefijos = new Dictionary<string, string>();                
+        Dictionary<char, string> TablaPrefijos = new Dictionary<char, string>();
+ 
         private List<Nodo> NodosProbabilidades = new List<Nodo>();
         private List<Elementos> TablaProbabilidades = new List<Elementos>();
         private List<Nodo> Sacar = new List<Nodo>();
@@ -103,7 +102,9 @@ namespace Lab4_Compresion.ArbolHuffman
             char[] charArray = CaminoInvertir.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
-        }
+ 
+        } 
+ 
 
     }
 }
