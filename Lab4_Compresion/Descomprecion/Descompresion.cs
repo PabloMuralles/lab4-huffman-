@@ -10,9 +10,15 @@ namespace Lab4_Compresion.Descomprecion
     {
         string NombreArchivo = string.Empty;
 
+        List<string> Frecuencias = new List<string>();
+
+        string TextoDescomprimir = string.Empty;
+
+       
+
          
 
-        const int longitud = 1000000;
+        
         public Descompresion(string nombrearchivocontrolller, string leercontroller)
         {
             NombreArchivo = nombrearchivocontrolller;
@@ -22,8 +28,8 @@ namespace Lab4_Compresion.Descomprecion
         {
             char[] CaracteresDelimitadores = { '\t', '\r', ' ' };
             StreamReader TextLeer = new StreamReader(leer);
-            string Texto = TextLeer.ReadToEnd();
-            string[] words = Texto.Split('\n');
+            var Texto = TextLeer.ReadToEnd();
+            var words = Texto.Split('\n');
             for (int i = 0; i < words.Length; i++)
             {
                 words[i] = words[i].Trim(CaracteresDelimitadores);
@@ -31,11 +37,26 @@ namespace Lab4_Compresion.Descomprecion
 
             for (int i = 0; i < words.Length; i++)
             {
-                if (true)
+                if (words[i] != "")
                 {
+                    string Validar = words[i].Substring(0, 1);
+                    if (Validar == "[")
+                    {
+                        Frecuencias.Add(words[i]);
+                    }
+                    else
+                    {
+                        if (Validar == "0" || Validar == "1")
+                        {
+                            TextoDescomprimir = words[i];
+                        }
+                    }
 
                 }
+              
             }
+
+           
 
 
 
