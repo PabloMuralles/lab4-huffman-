@@ -9,7 +9,10 @@ namespace Lab4_Compresion.Compresion
     public class Compresion
     {
         string archivo = string.Empty;
-        List<string> Datos_comprimidos = new List<string>();
+        string Datos_Comp = "";
+        static string RutaArchivos = string.Empty;
+        public Dictionary<char, int> Ocurrencia = new Dictionary<char, int>();
+        // List<string> Datos_comprimidos = new List<string>();
         private static Compresion _instance = null;
         public static Compresion Instance
         {
@@ -18,6 +21,11 @@ namespace Lab4_Compresion.Compresion
                 if (_instance == null) _instance = new Compresion();
                 return _instance;
             }
+        }
+       
+        public void recibirRutaArchivo(string ruta)
+        {
+            RutaArchivos = ruta;
         }
         public void asignar(string path)
         {
@@ -35,11 +43,22 @@ namespace Lab4_Compresion.Compresion
                 {
                     if (letra == llave[j])
                     {
-                        string V = valor[j];
-                        Datos_comprimidos.Add(V);
+                        string value = valor[j];
+                        Datos_Comp = Datos_Comp + value;
                     }
                 }
             }
+            generarArchivoDiccionario();
+        }
+        public void generarArchivoDiccionario()
+        {
+            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
+            foreach (var item in Ocurrencia)
+            {
+              streamWriter.WriteLine("{0}",item);
+            }
+            streamWriter.WriteLine($"{Datos_Comp}");
+            streamWriter.Close();
         }
     }
 }
