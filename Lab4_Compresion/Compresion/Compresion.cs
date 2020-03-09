@@ -11,6 +11,7 @@ namespace Lab4_Compresion.Compresion
         string archivo = string.Empty;
         string Datos_Comp = "";
         public string RutaArchivos = string.Empty;
+        public string archivoanterior = string.Empty;
         public Dictionary<char, int> Ocurrencia = new Dictionary<char, int>();
         // List<string> Datos_comprimidos = new List<string>();
         private static Compresion _instance = null;
@@ -47,16 +48,21 @@ namespace Lab4_Compresion.Compresion
             }
             generarArchivoDiccionario();
         }
+        public void generarHistorial()
+        {
+            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}\Historial\.huff");
+            var factorComresion = "";
+            var razoncompecion = "";
+            streamWriter.WriteLine("factor de compresion");
+            streamWriter.WriteLine("razon de compresion");
+            streamWriter.WriteLine($"nombre archivo anterior{archivoanterior}");
+        }
         public void generarArchivoDiccionario()
         {
             StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
-            foreach (var item in Ocurrencia.Keys)
+            foreach (var item in Ocurrencia)
             {
-              streamWriter.Write("{0}",item);
-                foreach (var item2 in Ocurrencia.Values)
-                {
-                    streamWriter.Write("{0}\n", item2);
-                }
+              streamWriter.Write("{0}",item);                
             }
             streamWriter.WriteLine($"{Datos_Comp}");
             streamWriter.Close();
