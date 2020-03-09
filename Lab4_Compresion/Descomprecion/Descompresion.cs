@@ -20,25 +20,33 @@ namespace Lab4_Compresion.Descomprecion
         }
         public void Descomprimir(string leer)
         {
-            char[] CaracteresDelimitadores = { '\t', '\r', ' ' };
-            StreamReader TextLeer = new StreamReader(leer);
-            string Texto = TextLeer.ReadToEnd();
-            string[] words = Texto.Split('\n');
-            for (int i = 0; i < words.Length; i++)
+            Dictionary<string, string> Caracteres = new Dictionary<string, string>();
+            var archivo = new StreamReader(leer);
+            var linea = archivo.ReadLine();           
+            
+            while (linea != null)
             {
-                words[i] = words[i].Trim(CaracteresDelimitadores);
+                linea = linea.Trim().Replace("["," ").Replace("]"," ");
+               var caracter = linea.Split(',');
+              Caracteres.Add(caracter[0],caracter[1]);
             }
+                //char[] CaracteresDelimitadores = { '\t', '\r', ' ' };
+                //StreamReader TextLeer = new StreamReader(leer);
+                //var Texto = TextLeer.ReadToEnd();
+                //var words = Texto.Split('\n');
+                //for (int i = 0; i < words.Length; i++)
+                //{
+                //    words[i] = words[i].Trim(CaracteresDelimitadores);
+                //}
 
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (true)
-                {
+                //for (int i = 0; i < words.Length; i++)
+                //{
+                //    if (true)
+                //    {
 
-                }
+                //    }
+                //}
+
             }
-
-
-
-        }
     }
 }
