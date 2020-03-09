@@ -120,22 +120,23 @@ namespace Lab4_Compresion.Descomprecion
 
         public void Escritura()
         {
-            for (int i = 0; i < TextoDescomprimir.Length; i++)
+            string textonuevo = string.Empty;
+            int contador = 0;
+            while (TextoDescomprimir.Substring(contador,1) !=null )
             {
-                for (int j = 1; j < TextoDescomprimir.Length; j++)
+                var text = TextoDescomprimir.Substring(contador, 1);
+                textonuevo += text;
+                foreach (var item in Tabla_Descomprimir)
                 {
-                    var Texto = TextoDescomprimir.Substring(i, j);
-                    foreach (var item in Tabla_Descomprimir)
+                    if (textonuevo == item.Value)
                     {
-                        if (item.Value==Texto)
-                        {
-                            DatoDescomprimido = DatoDescomprimido + item.Key;
-                        }
-
+                        DatoDescomprimido = DatoDescomprimido + item.Key;
+                        textonuevo = string.Empty;
+                        break;
                     }
-
                 }
-                
+                contador++;
+
             }
 
         }
