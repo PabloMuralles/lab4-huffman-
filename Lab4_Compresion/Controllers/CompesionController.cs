@@ -21,6 +21,7 @@ namespace Lab4_Compresion.Controllers
             Compresion.Compresion.Instance.RutaArchivos += nombre;
             Lectura.Lectura NuevoArchivo = new Lectura.Lectura(nombre,filePath);            
             return Ok(new { count = 1, path = filePath });
+
         }
     }
 }
