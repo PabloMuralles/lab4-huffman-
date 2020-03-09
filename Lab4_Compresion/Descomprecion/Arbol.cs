@@ -10,7 +10,7 @@ namespace Lab4_Compresion.Descomprecion
         Dictionary<string, string> Tabla_Descomprimir = new Dictionary<string, string>();
 
         string Nombre = string.Empty;
-        string DatoDescomprimido = string.Empty;
+         
 
         string TextoDescomprimir = string.Empty;
 
@@ -117,12 +117,16 @@ namespace Lab4_Compresion.Descomprecion
         }
 
 
+        string DatoDescomprimido = string.Empty;
 
+       
         public void Escritura()
         {
+            int largo = TextoDescomprimir.Length;
             string textonuevo = string.Empty;
             int contador = 0;
-            while (TextoDescomprimir.Substring(contador,1) !=null )
+              
+            while (TextoDescomprimir.Substring(contador, 1) != null)
             {
                 var text = TextoDescomprimir.Substring(contador, 1);
                 textonuevo += text;
@@ -135,9 +139,19 @@ namespace Lab4_Compresion.Descomprecion
                         break;
                     }
                 }
-                contador++;
+                if (contador<largo-1)
+                {
+                    contador++;
+                }
+                else
+                {
+                    break;
+                }
+                 
+
 
             }
+            
 
         }
 

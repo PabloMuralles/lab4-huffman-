@@ -50,9 +50,17 @@ namespace Lab4_Compresion.Descomprecion
             }
             foreach (var item in Caracteres)
             {
+                string CaracterFrecuencia;
                 Frecuencias NuevaFrecuencias = new Frecuencias();
                 int FrecuenciaDiccionario = Convert.ToInt32(item.Value);
-                string CaracterFrecuencia = item.Key.Trim();
+                if (item.Key == "  ")
+                {
+                    CaracterFrecuencia = item.Key;
+                }
+                else
+                {
+                    CaracterFrecuencia = item.Key.Trim();
+                }
                 Frecuencias.Add(new Frecuencias { Caracter = CaracterFrecuencia, Frecuencia = FrecuenciaDiccionario });
 
             }
