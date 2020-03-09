@@ -18,9 +18,10 @@ namespace Lab4_Compresion.Controllers
             if (file.Length > 0)
                 using (var stream = new FileStream(filePath, FileMode.Create))
                     await file.CopyToAsync(stream);
-            Lectura.Lectura NuevoArchivo = new Lectura.Lectura(nombre,filePath);
-            Compresion.Compresion.Instance.recibirRutaArchivo(nombre);
+            Compresion.Compresion.Instance.RutaArchivos += nombre;
+            Lectura.Lectura NuevoArchivo = new Lectura.Lectura(nombre,filePath);            
             return Ok(new { count = 1, path = filePath });
+
         }
     }
 }
