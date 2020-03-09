@@ -8,16 +8,27 @@ namespace Lab4_Compresion.Lectura
 {
     public class Lectura
     {
-        static Dictionary<char, Caracteres> diccionario = new Dictionary<char, Caracteres>();
-        static List<byte> Frecuencia = new List<byte>();
-         List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
+
+         
+        
+      
          Dictionary<char, int> elementos_enviar = new Dictionary<char, int>();
+
+        private Dictionary<char, Caracteres> diccionario = new Dictionary<char, Caracteres>();
+
+        private List<byte> Frecuencia = new List<byte>();
+
+        List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
+
+
         ArbolHuffman.Elementos elementos = null;
+
         public int num_total = 0;
         
         private string NombreArchivo = string.Empty;
      
         const int longitud = 1000000;
+
         Caracteres caracter = null;
 
 
@@ -25,6 +36,7 @@ namespace Lab4_Compresion.Lectura
         {
             NombreArchivo = nombrearchivocontrolller;
             Ingresar(leercontroller);
+
         }
         public void Ingresar(string leer)
         {

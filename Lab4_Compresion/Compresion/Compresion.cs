@@ -49,7 +49,6 @@ namespace Lab4_Compresion.Compresion
         }
         public void generarArchivoDiccionario()
         {
-
             StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
             foreach (var item in Ocurrencia)
             {
