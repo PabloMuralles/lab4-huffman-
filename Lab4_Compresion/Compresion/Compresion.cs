@@ -10,7 +10,7 @@ namespace Lab4_Compresion.Compresion
     {
         string archivo = string.Empty;
         string Datos_Comp = "";
-        static string RutaArchivos = string.Empty;
+        public string RutaArchivos = string.Empty;
         public Dictionary<char, int> Ocurrencia = new Dictionary<char, int>();
         // List<string> Datos_comprimidos = new List<string>();
         private static Compresion _instance = null;
@@ -23,10 +23,7 @@ namespace Lab4_Compresion.Compresion
             }
         }
        
-        public void recibirRutaArchivo(string ruta)
-        {
-            RutaArchivos = ruta;
-        }
+       
         public void asignar(string path)
         {
             var dato = new StreamReader(path);
@@ -52,7 +49,8 @@ namespace Lab4_Compresion.Compresion
         }
         public void generarArchivoDiccionario()
         {
-            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}\archivoComprimido.huff");
+
+            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
             foreach (var item in Ocurrencia)
             {
               streamWriter.WriteLine("{0}",item);
