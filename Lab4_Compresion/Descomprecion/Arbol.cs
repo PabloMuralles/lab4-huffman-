@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Lab4_Compresion.Descomprecion
@@ -65,6 +66,10 @@ namespace Lab4_Compresion.Descomprecion
             Recorrido(Raiz);
 
             Escritura();
+
+            GenerarArchivoDescomprimido();
+
+
 
            
         }
@@ -146,16 +151,16 @@ namespace Lab4_Compresion.Descomprecion
                 else
                 {
                     break;
-                }
-                 
-
-
+                } 
             }
-            
-
         }
 
-
+        public void GenerarArchivoDescomprimido()
+        {
+            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{Nombre}.txt");
+            streamWriter.WriteLine($"{DatoDescomprimido}");
+            streamWriter.Close();
+        }
 
 
     }
