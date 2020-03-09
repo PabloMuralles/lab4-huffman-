@@ -18,6 +18,7 @@ namespace Lab4_Compresion.ArbolHuffman
         }
         public char caracter { get; set; }
         public double probabilidad { get; set; }
+        public int cantidad { get; set; }
 
     }
 }
