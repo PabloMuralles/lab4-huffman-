@@ -35,5 +35,18 @@ namespace Lab4_Compresion.Controllers
             return Ok();
 
         }
+
+        [HttpPost]
+        [Route("api/compress/LZW/{nombre}")]
+        public async Task<IActionResult> PostCompressLZW(IFormFile file, string nombre)
+        {
+            var filePath = Path.GetTempFileName();
+            if (file.Length > 0)
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                    await file.CopyToAsync(stream);
+            LZW.Lectura.Compress Compress = new LZW.Lectura.Compress(nombre,filePath);
+            return Ok();
+
+        }
     }
 }
