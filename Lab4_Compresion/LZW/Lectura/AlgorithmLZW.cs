@@ -43,7 +43,39 @@ namespace Lab4_Compresion.LZW.Lectura
 
         public byte[] CompressFile(string file, Dictionary<string,int> diccionarioinicial)
         {
+            Dictionary<string, int> DiccionarioTemp = new Dictionary<string, int>(diccionarioinicial);
+            int Contador = 0;
+            string CaracteresLeidos = string.Empty;
+            List<byte> Bytes = new List<byte>();
+            while (Contador < file.Length)
+            {
+                CaracteresLeidos += file[Contador];
+                Contador++;
 
+                while (DiccionarioTemp.ContainsKey(CaracteresLeidos) && Contador < file.Length)
+                {
+                    CaracteresLeidos += file[Contador];
+                    Contador++;
+                }
+
+                if (DiccionarioTemp.ContainsKey(CaracteresLeidos))
+                {
+                    Bytes.Add(Convert.ToByte(DiccionarioTemp[CaracteresLeidos]));
+                }
+                else
+                {
+                    string Llave = CaracteresLeidos.Substring(0, CaracteresLeidos.Length - 1);
+                    Bytes.Add(Convert.ToByte(DiccionarioTemp[Llave]));
+                    DiccionarioTemp.Add(CaracteresLeidos, DiccionarioTemp.Count + 1);
+                    Contador--;
+                    CaracteresLeidos = string.Empty;
+
+
+                }
+
+            }
+            return Bytes.ToArray();
+            
         }
 
         
