@@ -78,6 +78,13 @@ namespace Lab4_Compresion.LZW.Lectura
             
         }
 
+        public (Dictionary<string, int>, byte[]) Compresion(string archivo)
+        {
+            Dictionary<string, int> Diccionario_Inicial = DiccionarioInicial(archivo);
+            byte[] ComprimirArchivo = CompressFile(archivo, Diccionario_Inicial);
+            return (Diccionario_Inicial, ComprimirArchivo);
+        }
+
         
 
 
