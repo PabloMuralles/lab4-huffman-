@@ -12,10 +12,11 @@ namespace Lab4_Compresion.LZW.Lectura
 
         string Direction = string.Empty;
 
-        public AlgorithmLZW(string Name, string Direction)
+        public AlgorithmLZW(string name, string direction)
         {
-            Name = this.Name;
-            Direction = this.Direction;
+            Name = name;
+            Direction = direction;
+            LecturaArchivo(Direction);
 
         }
 
@@ -23,6 +24,7 @@ namespace Lab4_Compresion.LZW.Lectura
         {
             StreamReader Archivo = new StreamReader(direction);
             var Contenido = Archivo.ReadToEnd();
+            Compresion(Contenido);
 
 
 
@@ -32,11 +34,14 @@ namespace Lab4_Compresion.LZW.Lectura
         {
             Dictionary<string, int> DiccionarioInicial = new Dictionary<string, int>();
             foreach (char caracter in Archivo)
-            {
-                if (!DiccionarioInicial.ContainsKey(Convert.ToString(caracter))) ;
+            { 
+                if (!DiccionarioInicial.ContainsKey(caracter.ToString()))
                 {
                     DiccionarioInicial.Add(caracter.ToString(), DiccionarioInicial.Count + 1);
                 }
+                
+                    
+                
             } 
             return DiccionarioInicial;
         }
@@ -86,7 +91,29 @@ namespace Lab4_Compresion.LZW.Lectura
         }
 
         
+        public void Escritura()
+        {
+            string CarpetaCompress = @$"c:\temp\Compress";
 
+
+
+
+
+
+
+
+
+            if (File.Exists(CarpetaCompress))
+            {
+
+            }
+            else
+            {
+                Directory.CreateDirectory(CarpetaCompress);
+            }
+
+
+        }
 
         
 
