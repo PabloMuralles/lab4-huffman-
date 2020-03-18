@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace Lab4_Compresion.LZW.Lectura
 {
@@ -11,6 +12,8 @@ namespace Lab4_Compresion.LZW.Lectura
         string Name = string.Empty;
 
         string Direction = string.Empty;
+
+        int ContadorClaves = 0;
 
         public AlgorithmLZW(string name, string direction)
         {
@@ -83,34 +86,40 @@ namespace Lab4_Compresion.LZW.Lectura
             
         }
 
-        public (Dictionary<string, int>, byte[]) Compresion(string archivo)
+        public void Compresion(string archivo)
         {
             Dictionary<string, int> Diccionario_Inicial = DiccionarioInicial(archivo);
             byte[] ComprimirArchivo = CompressFile(archivo, Diccionario_Inicial);
-            return (Diccionario_Inicial, ComprimirArchivo);
+            Escritur(ComprimirArchivo, Diccionario_Inicial);
         }
 
         
-        public void Escritura()
+        public void Escritur(byte[] Compresion , Dictionary<string, int> diccionario)
         {
-            string CarpetaCompress = @$"c:\temp\Compress";
+            string CarpetaCompress = Environment.CurrentDirectory;
 
-
-
-
-
-
-
-
-
-            if (File.Exists(CarpetaCompress))
+            if (!Directory.Exists(Path.Combine(CarpetaCompress, "Compress")))
             {
+                Directory.CreateDirectory(Path.Combine(CarpetaCompress, "Compress"));
+            }
+
+            using (var streamWriter = new FileStream(Path.Combine(CarpetaCompress, "Compress", "hola.lzw"), FileMode.OpenOrCreate))
+            {
+                using (var write = new BinaryWriter(streamWriter))
+                {
+                    write.Write(Encoding.UTF8.GetBytes(Convert.ToString(diccionario.Count).PadLeft(8, '0').ToCharArray()));
+
+                }
 
             }
-            else
-            {
-                Directory.CreateDirectory(CarpetaCompress);
-            }
+             
+             
+            
+       
+            
+           
+
+             
 
 
         }
