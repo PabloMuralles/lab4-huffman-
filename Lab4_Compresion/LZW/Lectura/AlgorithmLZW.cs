@@ -163,6 +163,10 @@ namespace Lab4_Compresion.LZW.Lectura
 
                         }
                     }
+                    if (Auxiliar.Length != 0)
+                    {
+                        EscrituraBitesCompresion.Add(Convert.ToByte(Convert.ToInt32(Auxiliar.PadRight(8,'0'),2)));
+                    }
 
                 }
 
