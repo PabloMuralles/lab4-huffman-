@@ -15,6 +15,11 @@ namespace Lab4_Compresion.LZW.Lectura
 
         int ContadorClaves = 0;
 
+        Dictionary<string, int> DiccionarioTotal;
+
+
+
+
         public AlgorithmLZW(string name, string direction)
         {
             Name = name;
@@ -49,9 +54,9 @@ namespace Lab4_Compresion.LZW.Lectura
             return DiccionarioInicial;
         }
 
-        public byte[] CompressFile(string file, Dictionary<string,int> diccionarioinicial)
+        public byte[] CompressFile(string file, Dictionary<string,int> diccionarioinicialc)
         {
-            Dictionary<string, int> DiccionarioTemp = new Dictionary<string, int>(diccionarioinicial);
+            Dictionary<string, int> DiccionarioTemp = new Dictionary<string, int>(diccionarioinicialc);
             int Contador = 0;
             string CaracteresLeidos = string.Empty;
             List<byte> Bytes = new List<byte>();
@@ -82,6 +87,7 @@ namespace Lab4_Compresion.LZW.Lectura
                 }
 
             }
+            DiccionarioTotal = new Dictionary<string, int>(DiccionarioTemp);
             return Bytes.ToArray();
             
         }
@@ -118,7 +124,7 @@ namespace Lab4_Compresion.LZW.Lectura
                         write.Write(Convert.ToByte(Convert.ToChar(item.Key)));
                     }
 
-                    var CantidadMaxima = Math.Log2(diccionario.Count());
+                    var CantidadMaxima = Math.Log2(DiccionarioTotal.Count());
 
                     if (CantidadMaxima % 1 >= 0.5)
                     {
@@ -130,24 +136,33 @@ namespace Lab4_Compresion.LZW.Lectura
                         CantidadMaxima = Convert.ToInt32(CantidadMaxima);
                     }
 
-                    List<byte> ListaCompresion = new List<byte>();
+                    var CompresionEnBinario = new List<string>();
+                    foreach (var item in Compresion)
+                    {
+                        var prueba = Convert.ToString(item, 2).PadLeft(Convert.ToInt32(CantidadMaxima), '0');
+                        CompresionEnBinario.Add(Convert.ToString(item , 2).PadLeft(Convert.ToInt32(CantidadMaxima),'0'));
+                    }
+
+                    var EscrituraBitesCompresion = new List<byte>();
 
                     string Auxiliar = string.Empty;
 
-                    foreach (var item in Compresion)
+                    foreach (var item in CompresionEnBinario)
                     {
-                        Auxiliar += item;
-
-                        if (Auxiliar.Length >= 8)
+                        Auxiliar = Auxiliar + item;
+                        if (Auxiliar.Length >= 8) 
                         {
+                            var caskldsdf = Auxiliar.Length;
+                            int CantiadadMaximaBits = Auxiliar.Length / 8;
+
+                            for (int i = 0; i < CantiadadMaximaBits; i++)
+                            {
+                                EscrituraBitesCompresion.Add(Convert.ToByte(Convert.ToInt32(Auxiliar.Substring(0,8),2)));
+                                Auxiliar = Auxiliar.Substring(8);
+                            }
 
                         }
-
-
                     }
-
-
-
 
                 }
 
