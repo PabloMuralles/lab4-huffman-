@@ -118,9 +118,30 @@ namespace Lab4_Compresion.LZW.Lectura
                         CantidadMaxima = Convert.ToInt32(CantidadMaxima);
                     }
 
-                    write.Write(Encoding.UTF8.GetBytes(Convert.ToString(CantidadMaxima).PadLeft(8, '0').ToCharArray()));
+                    var CantidadBites = CantidadMaxima / 255;
+
+                    if (CantidadBites % 255 !=0)
+                    {
+                        CantidadBites = Convert.ToInt32(CantidadBites) + 1;
+                    }
+
+                    write.Write(CantidadBites);
+
+                    
+
+
 
                 
+             
+                    
+
+
+
+
+
+
+
+
 
 
                 }
