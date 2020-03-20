@@ -107,6 +107,14 @@ namespace Lab4_Compresion.LZW.Lectura
             {
                 using (var write = new BinaryWriter(streamWriter))
                 {
+
+                    write.Write(Encoding.UTF8.GetBytes(Convert.ToString(diccionario.Count).PadLeft(8, '0').ToCharArray()));
+
+                    foreach (var item in diccionario)
+                    {
+                        write.Write(Convert.ToByte(Convert.ToChar(item.Key)));
+                    }
+
                     var CantidadMaxima = Math.Log2(diccionario.Count());
                     if (CantidadMaxima % 1 >= 0.5)
                     {
@@ -117,32 +125,6 @@ namespace Lab4_Compresion.LZW.Lectura
                     {
                         CantidadMaxima = Convert.ToInt32(CantidadMaxima);
                     }
-
-                    var CantidadBites = CantidadMaxima / 255;
-
-                    if (CantidadBites % 255 !=0)
-                    {
-                        CantidadBites = Convert.ToInt32(CantidadBites) + 1;
-                    }
-
-                    write.Write(CantidadBites);
-
-                    
-
-
-
-                
-             
-                    
-
-
-
-
-
-
-
-
-
 
                 }
 
