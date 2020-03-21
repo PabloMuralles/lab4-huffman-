@@ -20,6 +20,7 @@ namespace Lab4_Compresion.LZW.Lectura
             Lectura(Archivo);
         }
 
+
         public void Lectura(IFormFile file )
         {
             string Carpetadesscompress = Environment.CurrentDirectory;
@@ -38,22 +39,57 @@ namespace Lab4_Compresion.LZW.Lectura
                         
                         var CantidadDiccioanrioNumeros = Convert.ToInt32(Encoding.UTF8.GetString(CantidadDiccioanriobytes));
 
-                        var DiccionarioCaracteres = reader.ReadBytes(CantidadDiccioanrioNumeros);
-
-                        var CaracteresDic = Encoding.UTF8.GetString(DiccionarioCaracteres);
-
                         var DiccionarioInicial = new Dictionary<string, int>();
 
-                        var Contador = 1;
-
-                        foreach (var item in CaracteresDic)
+                        for (int i = 0; i < CantidadDiccioanrioNumeros; i++)
                         {
-                            if (Contador != CantidadDiccioanrioNumeros)
-                            {
-                                DiccionarioInicial.Add(Convert.ToString(item) , Contador);
-                                Contador++;
-                            }
+                            var Caracter = reader.ReadBytes(1);                      
+                            DiccionarioInicial.Add(Convert.ToChar(Caracter[0]).ToString(), DiccionarioInicial.Count + 1);
                         }
+
+                        var CantiadaMax = reader.ReadBytes(1);
+
+                        var cantidadMaxBits = Convert.ToInt32(CantiadaMax[0]);
+
+                        var Buffer = new byte[1000000];
+
+                        var TextoComprimidoBits = new List<int>();
+
+                        Buffer = reader.ReadBytes(10000000);
+
+                        string Auxiliar = string.Empty;
+
+                        foreach (var item in Buffer)
+                        { 
+                            Auxiliar = Auxiliar + Convert.ToString(item,2).PadLeft(8,'0');
+                             
+                            if (Auxiliar.Length >= cantidadMaxBits)
+                            {
+                                int CantidadParaescribirCaracter = Auxiliar.Length / cantidadMaxBits;
+
+                                for (int i = 0; i < CantidadParaescribirCaracter; i++)
+                                {
+                                    //var per = Auxiliar.Substring(0, cantidadMaxBits);
+                                    //var jdj = Convert.ToInt32(Auxiliar.Substring(0, cantidadMaxBits), 2);
+                                    TextoComprimidoBits.Add(Convert.ToInt32(Auxiliar.Substring(0, cantidadMaxBits),2));
+                                    Auxiliar = Auxiliar.Substring(cantidadMaxBits);
+                                }
+
+                            }
+
+
+
+
+
+
+                        }
+
+
+
+
+
+
+
 
 
                     }
