@@ -112,9 +112,7 @@ namespace Lab4_Compresion.LZW.Lectura
                     
 
                     foreach (var item in diccionario)
-                    {
-                        var aksdjf= Convert.ToChar(item.Key);
-                        
+                    {   
                         write.Write(Convert.ToByte(Convert.ToChar(item.Key)));
                     }
 
