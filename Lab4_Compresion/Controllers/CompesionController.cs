@@ -44,7 +44,7 @@ namespace Lab4_Compresion.Controllers
             if (file.Length > 0)
                 using (var stream = new FileStream(filePath, FileMode.Create))
                     await file.CopyToAsync(stream);
-            LZW.Lectura.AlgorithmLZW Compress = new LZW.Lectura.AlgorithmLZW(nombre,filePath);
+            LZW.Lectura.AlgoritomoCompresion Compress = new LZW.Lectura.AlgoritomoCompresion(nombre,filePath);
             return Ok();
 
         }

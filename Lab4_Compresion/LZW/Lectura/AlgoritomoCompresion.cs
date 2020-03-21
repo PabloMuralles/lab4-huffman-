@@ -7,20 +7,15 @@ using System.Text;
 
 namespace Lab4_Compresion.LZW.Lectura
 {
-    public class AlgorithmLZW
+    public class AlgoritomoCompresion
     {
         string Name = string.Empty;
 
         string Direction = string.Empty;
-
-        int ContadorClaves = 0;
-
+         
         Dictionary<string, int> DiccionarioTotal;
-
-
-
-
-        public AlgorithmLZW(string name, string direction)
+         
+        public AlgoritomoCompresion(string name, string direction)
         {
             Name = name;
             Direction = direction;
@@ -38,28 +33,23 @@ namespace Lab4_Compresion.LZW.Lectura
 
         }
 
-        public Dictionary<string,int> DiccionarioInicial(string Archivo)
+        public Dictionary<string,int> DiccionarioInicial(string text)
         {
-            Dictionary<string, int> DiccionarioInicial = new Dictionary<string, int>();
-            foreach (char caracter in Archivo)
-            { 
-                if (!DiccionarioInicial.ContainsKey(caracter.ToString()))
-                {
-                    DiccionarioInicial.Add(caracter.ToString(), DiccionarioInicial.Count + 1);
-                }
-                
-                    
-                
-            } 
-            return DiccionarioInicial;
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+            foreach (char character in text)
+            {
+                if (!dict.ContainsKey(character.ToString()))
+                    dict.Add(character.ToString(), dict.Count + 1);
+            }
+            return dict;
         }
 
-        public byte[] CompressFile(string file, Dictionary<string,int> diccionarioinicialc)
+        public int[] CompressFile(string file, Dictionary<string, int> diccionarioinicialc)
         {
-            Dictionary<string, int> DiccionarioTemp = new Dictionary<string, int>(diccionarioinicialc);
-            int Contador = 0;
-            string CaracteresLeidos = string.Empty;
-            List<byte> Bytes = new List<byte>();
+            var DiccionarioTemp = new Dictionary<string, int>(diccionarioinicialc);
+            var Contador = 0;
+            var CaracteresLeidos = string.Empty;
+            var Bytes = new List<int>();
             while (Contador < file.Length)
             {
                 CaracteresLeidos += file[Contador];
@@ -73,12 +63,12 @@ namespace Lab4_Compresion.LZW.Lectura
 
                 if (DiccionarioTemp.ContainsKey(CaracteresLeidos))
                 {
-                    Bytes.Add(Convert.ToByte(DiccionarioTemp[CaracteresLeidos]));
+                    Bytes.Add((DiccionarioTemp[CaracteresLeidos]));
                 }
                 else
                 {
-                    string Llave = CaracteresLeidos.Substring(0, CaracteresLeidos.Length - 1);
-                    Bytes.Add(Convert.ToByte(DiccionarioTemp[Llave]));
+                    var Llave = CaracteresLeidos.Substring(0, CaracteresLeidos.Length - 1);
+                    Bytes.Add((DiccionarioTemp[Llave]));
                     DiccionarioTemp.Add(CaracteresLeidos, DiccionarioTemp.Count + 1);
                     Contador--;
                     CaracteresLeidos = string.Empty;
@@ -89,18 +79,20 @@ namespace Lab4_Compresion.LZW.Lectura
             }
             DiccionarioTotal = new Dictionary<string, int>(DiccionarioTemp);
             return Bytes.ToArray();
-            
+
+
+
         }
 
         public void Compresion(string archivo)
         {
             Dictionary<string, int> Diccionario_Inicial = DiccionarioInicial(archivo);
-            byte[] ComprimirArchivo = CompressFile(archivo, Diccionario_Inicial);
+            int[] ComprimirArchivo = CompressFile(archivo, Diccionario_Inicial);
             Escritur(ComprimirArchivo, Diccionario_Inicial);
         }
 
         
-        public void Escritur(byte[] Compresion , Dictionary<string, int> diccionario)
+        public void Escritur(int[] Compresion , Dictionary<string, int> diccionario)
         {
              
 
@@ -116,11 +108,13 @@ namespace Lab4_Compresion.LZW.Lectura
                 using (var write = new BinaryWriter(streamWriter))
                 {
 
-                    //write.Write(Encoding.UTF8.GetBytes(Convert.ToString(diccionario.Count).PadLeft(8, '0').ToCharArray()));
-                    write.Write(BitConverter.GetBytes(diccionario.Count));
+                    write.Write(Encoding.UTF8.GetBytes(Convert.ToString(diccionario.Count).PadLeft(8, '0').ToCharArray()));
+                    
 
                     foreach (var item in diccionario)
                     {
+                        var aksdjf= Convert.ToChar(item.Key);
+                        
                         write.Write(Convert.ToByte(Convert.ToChar(item.Key)));
                     }
 
@@ -136,7 +130,10 @@ namespace Lab4_Compresion.LZW.Lectura
                         CantidadMaxima = Convert.ToInt32(CantidadMaxima);
                     }
 
+                    write.Write(Convert.ToByte(CantidadMaxima));
+
                     var CompresionEnBinario = new List<string>();
+
                     foreach (var item in Compresion)
                     {
                         var prueba = Convert.ToString(item, 2).PadLeft(Convert.ToInt32(CantidadMaxima), '0');
@@ -168,26 +165,16 @@ namespace Lab4_Compresion.LZW.Lectura
                         EscrituraBitesCompresion.Add(Convert.ToByte(Convert.ToInt32(Auxiliar.PadRight(8,'0'),2)));
                     }
 
+                    write.Write(EscrituraBitesCompresion.ToArray());
                 }
 
-            }
-             
-             
-            
+            } 
+        }
+
+
+
        
-            
-           
 
-             
-
-
-        }
-
-        
-        public void Lectura()
-        {
-
-        }
-
+         
     }
 }
