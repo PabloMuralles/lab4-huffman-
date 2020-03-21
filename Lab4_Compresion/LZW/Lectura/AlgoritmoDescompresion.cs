@@ -33,7 +33,7 @@ namespace Lab4_Compresion.LZW.Lectura
             {
                 using (var streamwitre = new FileStream(Path.Combine(Carpetadesscompress, "desscompressLZW","hola"),FileMode.OpenOrCreate))
                 {
-                    using (var streamwrite = new BinaryWriter(streamwitre))
+                    using (var write = new BinaryWriter(streamwitre))
                     {
                         var CantidadDiccioanriobytes = reader.ReadBytes(8);
                         
@@ -75,16 +75,11 @@ namespace Lab4_Compresion.LZW.Lectura
                                     Auxiliar = Auxiliar.Substring(cantidadMaxBits);
                                 }
 
-                            }
-
-
-
-
-
-
+                            } 
                         }
+                        var TextoOriginal = Descomprimir(TextoComprimidoBits.ToArray(), DiccionarioInicial);
 
-
+                        write.Write(Encoding.UTF8.GetBytes(TextoOriginal));
 
 
 
@@ -97,6 +92,31 @@ namespace Lab4_Compresion.LZW.Lectura
 
             }
         }
+
+
+        public string Descomprimir(int[] ArchivoComprimido, Dictionary<string,int> diccionarioinicial)
+        {
+            var DiccionarioTotal = new Dictionary<string, int>(diccionarioinicial);
+            var PosicionAnterior = ArchivoComprimido[0];
+            var ArchivoDescompreso = DiccionarioTotal.FirstOrDefault(x => x.Value == PosicionAnterior).Key;
+            var Contador = 1;
+
+            while (Contador < ArchivoComprimido.Length)
+            {
+                var Texto = string.Empty;
+                var Caracter = DiccionarioTotal.FirstOrDefault(x => x.Value == PosicionAnterior).Key;
+                var ActualPosicion = ArchivoComprimido[Contador];
+                Texto = DiccionarioTotal.FirstOrDefault(x => x.Value == ActualPosicion).Key;
+                DiccionarioTotal.Add(Caracter + Texto[0], DiccionarioTotal.Count + 1);
+                ArchivoDescompreso = ArchivoDescompreso + Texto;
+                PosicionAnterior = ActualPosicion;
+                Contador++;
+
+
+            }
+            return ArchivoDescompreso;
+        }
+
 
 
 
