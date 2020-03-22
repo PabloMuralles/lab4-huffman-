@@ -110,7 +110,7 @@ namespace Lab4_Compresion.LZW.Lectura
                 Directory.CreateDirectory(Path.Combine(CarpetaCompress, "Compress"));
             }
 
-            using (var streamWriter = new FileStream(Path.Combine(CarpetaCompress, "Compress", "hola.lzw"), FileMode.OpenOrCreate))
+            using (var streamWriter = new FileStream(Path.Combine(CarpetaCompress, "Compress", $"{Name}.lzw"), FileMode.OpenOrCreate))
             {
                 using (var write = new BinaryWriter(streamWriter))
                 {
@@ -123,16 +123,15 @@ namespace Lab4_Compresion.LZW.Lectura
                         write.Write(Convert.ToByte(Convert.ToChar(item.Key)));
                     }
 
-                    var CantidadMaxima = Math.Log2(DiccionarioTotal.Count());
+                    double CantidadMaxima = Math.Log2(DiccionarioTotal.Count());
 
                     if (CantidadMaxima % 1 >= 0.5)
-                    {
-                        CantidadMaxima += 1;
+                    { 
                         CantidadMaxima = Convert.ToInt32(CantidadMaxima);
                     }
                     else
                     {
-                        CantidadMaxima = Convert.ToInt32(CantidadMaxima);
+                        CantidadMaxima = Convert.ToInt32(CantidadMaxima) + 1;
                     }
 
                     write.Write(Convert.ToByte(CantidadMaxima));
@@ -140,8 +139,7 @@ namespace Lab4_Compresion.LZW.Lectura
                     var CompresionEnBinario = new List<string>();
 
                     foreach (var item in Compresion)
-                    {
-                        var prueba = Convert.ToString(item, 2).PadLeft(Convert.ToInt32(CantidadMaxima), '0');
+                    { 
                         CompresionEnBinario.Add(Convert.ToString(item , 2).PadLeft(Convert.ToInt32(CantidadMaxima),'0'));
                     }
 
@@ -154,11 +152,14 @@ namespace Lab4_Compresion.LZW.Lectura
                         Auxiliar = Auxiliar + item;
                         if (Auxiliar.Length >= 8) 
                         {
-                            var caskldsdf = Auxiliar.Length;
+                       
                             int CantiadadMaximaBits = Auxiliar.Length / 8;
 
                             for (int i = 0; i < CantiadadMaximaBits; i++)
                             {
+                                var sdf = Convert.ToInt32(Auxiliar.Substring(0, 8), 2);
+                                var asdf= Convert.ToInt32((Auxiliar.Substring(0, 8)), 2);
+                                 
                                 EscrituraBitesCompresion.Add(Convert.ToByte(Convert.ToInt32(Auxiliar.Substring(0,8),2)));
                                 Auxiliar = Auxiliar.Substring(8);
                             }
@@ -167,6 +168,7 @@ namespace Lab4_Compresion.LZW.Lectura
                     }
                     if (Auxiliar.Length != 0)
                     {
+                         
                         EscrituraBitesCompresion.Add(Convert.ToByte(Convert.ToInt32(Auxiliar.PadRight(8,'0'),2)));
                     }
 

@@ -50,14 +50,14 @@ namespace Lab4_Compresion.Controllers
         }
 
         [HttpPost]
-        [Route("api/desscompress/LZW")]
-        public async Task<IActionResult> PostdessCompressLZW(IFormFile file)
+        [Route("api/decompress/LZW/{nombre}")]
+        public async Task<IActionResult> PostdessCompressLZW(IFormFile file, string nombre)
         {
             var filePath = Path.GetTempFileName();
             if (file.Length > 0)
                 using (var stream = new FileStream(filePath, FileMode.Create))
                     await file.CopyToAsync(stream);
-            LZW.Lectura.AlgoritmoDescompresion Desscompress = new LZW.Lectura.AlgoritmoDescompresion(file);
+            LZW.Lectura.AlgoritmoDescompresion Desscompress = new LZW.Lectura.AlgoritmoDescompresion(file,nombre);
             return Ok();
 
         }

@@ -11,12 +11,12 @@ namespace Lab4_Compresion.LZW.Lectura
 {
     public class AlgoritmoDescompresion
     {
-         
 
+        string Nombre = string.Empty;
 
-        public AlgoritmoDescompresion(IFormFile Archivo)
+        public AlgoritmoDescompresion(IFormFile Archivo, string nombre)
         {
-            
+            Nombre = nombre;
             Lectura(Archivo);
         }
 
@@ -25,13 +25,13 @@ namespace Lab4_Compresion.LZW.Lectura
         {
             string Carpetadesscompress = Environment.CurrentDirectory;
 
-            if (!Directory.Exists(Path.Combine(Carpetadesscompress, "desscompressLZW")))
+            if (!Directory.Exists(Path.Combine(Carpetadesscompress, "decompressLZW")))
             {
-                Directory.CreateDirectory(Path.Combine(Carpetadesscompress, "desscompressLZW"));
+                Directory.CreateDirectory(Path.Combine(Carpetadesscompress, "decompressLZW"));
             }
             using (var reader = new BinaryReader(file.OpenReadStream()))
             {
-                using (var streamwitre = new FileStream(Path.Combine(Carpetadesscompress, "desscompressLZW","hola"),FileMode.OpenOrCreate))
+                using (var streamwitre = new FileStream(Path.Combine(Carpetadesscompress, "decompressLZW",$"{Nombre}.txt"),FileMode.OpenOrCreate))
                 {
                     using (var write = new BinaryWriter(streamwitre))
                     {
@@ -51,11 +51,15 @@ namespace Lab4_Compresion.LZW.Lectura
 
                         var cantidadMaxBits = Convert.ToInt32(CantiadaMax[0]);
 
-                        var Buffer = new byte[1000000];
+                        var LonguitudArchivo =Convert.ToInt32(reader.BaseStream.Length);
+
+                        var LonguitudLeer = Convert.ToInt32(LonguitudArchivo - reader.BaseStream.Position);
+
+                        var Buffer = new byte[LonguitudArchivo+10000];
 
                         var TextoComprimidoBits = new List<int>();
 
-                        Buffer = reader.ReadBytes(10000000);
+                        Buffer = reader.ReadBytes(LonguitudLeer);
 
                         string Auxiliar = string.Empty;
 
@@ -68,9 +72,7 @@ namespace Lab4_Compresion.LZW.Lectura
                                 int CantidadParaescribirCaracter = Auxiliar.Length / cantidadMaxBits;
 
                                 for (int i = 0; i < CantidadParaescribirCaracter; i++)
-                                {
-                                    //var per = Auxiliar.Substring(0, cantidadMaxBits);
-                                    //var jdj = Convert.ToInt32(Auxiliar.Substring(0, cantidadMaxBits), 2);
+                                { 
                                     TextoComprimidoBits.Add(Convert.ToInt32(Auxiliar.Substring(0, cantidadMaxBits),2));
                                     Auxiliar = Auxiliar.Substring(cantidadMaxBits);
                                 }
@@ -82,14 +84,7 @@ namespace Lab4_Compresion.LZW.Lectura
                         foreach (var item in TextoOriginal)
                         {
                             write.Write(Convert.ToByte(Convert.ToChar (item)));
-                        }
-
-
-
-
-
-
-
+                        } 
                     }
                 }
 
@@ -114,14 +109,10 @@ namespace Lab4_Compresion.LZW.Lectura
                 ArchivoDescompreso = ArchivoDescompreso + Texto;
                 PosicionAnterior = ActualPosicion;
                 Contador++;
-
-
+                 
             }
             return ArchivoDescompreso;
         }
-
-
-
-
+         
     }
 }
