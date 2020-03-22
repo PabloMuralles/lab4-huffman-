@@ -92,26 +92,44 @@ namespace Lab4_Compresion.LZW.Lectura
         }
 
 
-        public string Descomprimir(int[] ArchivoComprimido, Dictionary<string,int> diccionarioinicial)
+        public string Descomprimir(int[] ArchivoComprimido, Dictionary<string,int> dicci)
         {
-            var DiccionarioTotal = new Dictionary<string, int>(diccionarioinicial);
-            var PosicionAnterior = ArchivoComprimido[0];
-            var ArchivoDescompreso = DiccionarioTotal.FirstOrDefault(x => x.Value == PosicionAnterior).Key;
-            var Contador = 1;
+            var DiccionarioTemp = new Dictionary<string, int>(dicci);
+            var Actual = string.Empty;
+            var Anterio = string.Empty;
+            var Texto = string.Empty;
+            var Contador = 0;
+            int Nuevo = 0;
+
+            Nuevo = ArchivoComprimido[Contador];
+            Anterio = DiccionarioTemp.FirstOrDefault(x => x.Value == Nuevo).Key;           
+            Texto += Anterio;
+            Contador++;
+
+
 
             while (Contador < ArchivoComprimido.Length)
             {
-                var Texto = string.Empty;
-                var Caracter = DiccionarioTotal.FirstOrDefault(x => x.Value == PosicionAnterior).Key;
-                var ActualPosicion = ArchivoComprimido[Contador];
-                Texto = DiccionarioTotal.FirstOrDefault(x => x.Value == ActualPosicion).Key;
-                DiccionarioTotal.Add(Caracter + Texto[0], DiccionarioTotal.Count + 1);
-                ArchivoDescompreso = ArchivoDescompreso + Texto;
-                PosicionAnterior = ActualPosicion;
-                Contador++;
-                 
+                Nuevo = ArchivoComprimido[Contador];
+                if (Nuevo > DiccionarioTemp.Count)
+                {
+                    Actual = Anterio + Anterio.Substring(0, 1);
+                    DiccionarioTemp.Add(Actual, DiccionarioTemp.Count + 1);
+                    Texto += Actual;
+                    Contador++;
+                    Anterio = Actual;
+                }
+                else
+                {
+                    Actual = DiccionarioTemp.FirstOrDefault(x => x.Value == Nuevo).Key;
+                    var Caracter = Anterio + Actual.Substring(0, 1);
+                    DiccionarioTemp.Add(Caracter, DiccionarioTemp.Count + 1);
+                    Texto += Actual;
+                    Contador++;
+                    Anterio = Actual;
+                } 
             }
-            return ArchivoDescompreso;
+            return Texto  ;
         }
          
     }
