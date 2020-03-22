@@ -79,7 +79,10 @@ namespace Lab4_Compresion.LZW.Lectura
                         }
                         var TextoOriginal = Descomprimir(TextoComprimidoBits.ToArray(), DiccionarioInicial);
 
-                        write.Write(Encoding.UTF8.GetBytes(TextoOriginal));
+                        foreach (var item in TextoOriginal)
+                        {
+                            write.Write(Convert.ToByte(Convert.ToChar (item)));
+                        }
 
 
 

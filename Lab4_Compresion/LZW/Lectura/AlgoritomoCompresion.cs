@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using System.Text;
 
 namespace Lab4_Compresion.LZW.Lectura
@@ -10,41 +11,47 @@ namespace Lab4_Compresion.LZW.Lectura
     public class AlgoritomoCompresion
     {
         string Name = string.Empty;
-
-        string Direction = string.Empty;
          
         Dictionary<string, int> DiccionarioTotal;
          
-        public AlgoritomoCompresion(string name, string direction)
+        public AlgoritomoCompresion(string name, IFormFile file)
         {
             Name = name;
-            Direction = direction;
-            LecturaArchivo(Direction);
+            LecturaArchivo(file);
 
         }
 
-        public void LecturaArchivo(string direction)
+        public void LecturaArchivo(IFormFile direction)
         {
-            StreamReader Archivo = new StreamReader(direction);
-            var Contenido = Archivo.ReadToEnd();
-            Compresion(Contenido);
-
-
-
-        }
-
-        public Dictionary<string,int> DiccionarioInicial(string text)
-        {
-            Dictionary<string, int> dict = new Dictionary<string, int>();
-            foreach (char character in text)
+            using (var reader = new BinaryReader(direction.OpenReadStream()))
             {
-                if (!dict.ContainsKey(character.ToString()))
-                    dict.Add(character.ToString(), dict.Count + 1);
+                var LonguitudArchivo = Convert.ToInt32(reader.BaseStream.Length);
+                byte[] buffer = new byte[LonguitudArchivo];
+                buffer = reader.ReadBytes(LonguitudArchivo);
+                Compresion(buffer);
+
+
             }
-            return dict;
+             
         }
 
-        public int[] CompressFile(string file, Dictionary<string, int> diccionarioinicialc)
+        public Dictionary<string,int> DiccionarioInicial(byte[] text)
+        {
+            Dictionary<string, int> DiccionarioInicial = new Dictionary<string, int>();
+            foreach (byte Caracter in text)
+            {
+                var Caracter2 = Convert.ToString(Convert.ToChar(Caracter));
+
+                if (!DiccionarioInicial.ContainsKey(Caracter2))
+                {
+                    DiccionarioInicial.Add(Caracter2, DiccionarioInicial.Count + 1);
+                }
+           
+            }
+            return DiccionarioInicial;
+        }
+
+        public int[] CompressFile(byte[] file, Dictionary<string, int> diccionarioinicialc)
         {
             var DiccionarioTemp = new Dictionary<string, int>(diccionarioinicialc);
             var Contador = 0;
@@ -52,12 +59,12 @@ namespace Lab4_Compresion.LZW.Lectura
             var Bytes = new List<int>();
             while (Contador < file.Length)
             {
-                CaracteresLeidos += file[Contador];
+                CaracteresLeidos += Convert.ToString(Convert.ToChar(file[Contador]));
                 Contador++;
 
                 while (DiccionarioTemp.ContainsKey(CaracteresLeidos) && Contador < file.Length)
                 {
-                    CaracteresLeidos += file[Contador];
+                    CaracteresLeidos += Convert.ToString(Convert.ToChar(file[Contador]));
                     Contador++;
                 }
 
@@ -84,7 +91,7 @@ namespace Lab4_Compresion.LZW.Lectura
 
         }
 
-        public void Compresion(string archivo)
+        public void Compresion(byte[] archivo)
         {
             Dictionary<string, int> Diccionario_Inicial = DiccionarioInicial(archivo);
             int[] ComprimirArchivo = CompressFile(archivo, Diccionario_Inicial);
