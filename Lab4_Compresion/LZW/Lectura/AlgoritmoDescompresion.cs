@@ -9,15 +9,32 @@ using System.Text;
 
 namespace Lab4_Compresion.LZW.Lectura
 {
+    
     public class AlgoritmoDescompresion
     {
 
         string Nombre = string.Empty;
 
+        IFormFile fileHistorial = null;
+
         public AlgoritmoDescompresion(IFormFile Archivo, string nombre)
         {
             Nombre = nombre;
+            fileHistorial = Archivo;
             Lectura(Archivo);
+
+ 
+            
+            DatosArchivoDescomprido dartos = new DatosArchivoDescomprido();
+        
+            dartos.TamañoComprimido = Convert.ToInt32(fileHistorial.Length);
+            dartos.NombreOrignalComprido = fileHistorial.FileName;
+            dartos.Ruta = Path.Combine(Environment.CurrentDirectory, "decompressLZW", $"{Nombre}.txt");
+
+            HistorialCompresion.Instance.ArchivosDescomprimidosPils.Add(dartos);
+
+           
+
         }
 
 
@@ -84,7 +101,8 @@ namespace Lab4_Compresion.LZW.Lectura
                         foreach (var item in TextoOriginal)
                         {
                             write.Write(Convert.ToByte(Convert.ToChar (item)));
-                        } 
+                        }
+                        
                     }
                 }
 

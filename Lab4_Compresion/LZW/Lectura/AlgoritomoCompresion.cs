@@ -18,6 +18,12 @@ namespace Lab4_Compresion.LZW.Lectura
         {
             Name = name;
             LecturaArchivo(file);
+            DatosArchivoCompresion datos = new DatosArchivoCompresion();
+            datos.NombreOriginal = file.FileName;
+            datos.BytesOriginal = Convert.ToInt32(file.Length);
+            datos.Ruta = Path.Combine(Environment.CurrentDirectory, "CompressLZW", $"{Name}.lzw");
+            datos.NombreNuevo = $"{Name}.lzw";
+            HistorialCompresion.Instance.ArchivosComprimidosPila.Add(datos);
 
         }
 
@@ -105,12 +111,12 @@ namespace Lab4_Compresion.LZW.Lectura
 
             string CarpetaCompress = Environment.CurrentDirectory;
 
-            if (!Directory.Exists(Path.Combine(CarpetaCompress, "Compress")))
+            if (!Directory.Exists(Path.Combine(CarpetaCompress, "CompressLZW")))
             {
-                Directory.CreateDirectory(Path.Combine(CarpetaCompress, "Compress"));
+                Directory.CreateDirectory(Path.Combine(CarpetaCompress, "CompressLZW"));
             }
 
-            using (var streamWriter = new FileStream(Path.Combine(CarpetaCompress, "Compress", $"{Name}.lzw"), FileMode.OpenOrCreate))
+            using (var streamWriter = new FileStream(Path.Combine(CarpetaCompress, "CompressLZW", $"{Name}.lzw"), FileMode.OpenOrCreate))
             {
                 using (var write = new BinaryWriter(streamWriter))
                 {
@@ -174,6 +180,7 @@ namespace Lab4_Compresion.LZW.Lectura
 
                     write.Write(EscrituraBitesCompresion.ToArray());
                 }
+                
 
             } 
         }
