@@ -10,25 +10,13 @@ namespace Lab4_Compresion.Compresion
     public class Compresion
     {
         FileStream Archivo;
-        string Datos_Comp = "";
-        public string RutaArchivos = string.Empty;
-        public Dictionary<char, int> Ocurrencia = new Dictionary<char, int>();
-        // List<string> Datos_comprimidos = new List<string>();
-        private static Compresion _instance = null;
-        public static Compresion Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new Compresion();
-                return _instance;
-            }
-        }
-       
-       
-        public void asignar(string path)
+
+        string NombreNuevo = string.Empty;
+      
+        public Compresion(string path, string NombreArchivo)
         {
             Archivo = new FileStream(path, FileMode.Open);
-             
+            NombreNuevo = NombreArchivo;
         }
         public void Comprimir(Dictionary<string, string> lectura)
         {
@@ -41,7 +29,7 @@ namespace Lab4_Compresion.Compresion
 
             using (var LecturaArchivo = new BinaryReader(Archivo))
             {
-                using (var Archivo = new FileStream(Path.Combine(CarpetaCompress, "CompressHuffman",$"{RutaArchivos}.huff"),FileMode.OpenOrCreate))
+                using (var Archivo = new FileStream(Path.Combine(CarpetaCompress, "CompressHuffman",$"{NombreNuevo}.huff"),FileMode.OpenOrCreate))
                 {
                     using (var Escritura = new BinaryWriter(Archivo))
                     {
@@ -50,7 +38,9 @@ namespace Lab4_Compresion.Compresion
                         foreach (var item in lectura)
                         {
                             Escritura.Write(item.Key);
-                            Escritura.Write(item.Value);
+                            var Auxiliar = item.Value;
+                            Auxiliar += "|";
+                            Escritura.Write(Auxiliar);
                         }
                         var CadenaBits = string.Empty;
                         var Buffer = new byte[10000];
@@ -86,42 +76,6 @@ namespace Lab4_Compresion.Compresion
                     }
                 } 
             } 
-        }
-
-
-
-
-        public void Comprimir2(Dictionary<string, string> lectura)
-        {
-            //List<string> llave = new List<string>(lectura.Keys);
-            //List<string> valor = new List<string>(lectura.Values);
-            //for (int i = 0; i < archivo.Length; i++)
-            //{
-            //    var letra = archivo.Substring(i, 1);
-            //    for (int j = 0; j < llave.Count; j++)
-            //    {
-            //        if (letra == llave[j])
-            //        {
-            //            string value = valor[j];
-            //            Datos_Comp = Datos_Comp + value;
-            //        }
-            //    }
-            //}
-            //generarArchivoDiccionario();
-
-        }
-
-
-        public void generarArchivoDiccionario()
-        {
-            StreamWriter streamWriter = new StreamWriter(@$"c:\temp\{RutaArchivos}.huff");
-            foreach (var item in Ocurrencia)
-            {
-              streamWriter.WriteLine("{0}",item);
-               
-            }
-            streamWriter.WriteLine($"{Datos_Comp}");
-            streamWriter.Close();
-        }
+        } 
     }
 }

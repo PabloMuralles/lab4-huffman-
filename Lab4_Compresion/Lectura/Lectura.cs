@@ -31,10 +31,10 @@ namespace Lab4_Compresion.Lectura
         public Lectura(string nombrearchivocontrolller,string leercontroller)
         {
             NombreArchivo = nombrearchivocontrolller;
-            Ingresar(leercontroller);
+            Ingresar(leercontroller, nombrearchivocontrolller);
 
         }
-        public void Ingresar(string leer)
+        public void Ingresar(string leer, string nombre)
         { 
             using (var stream = new FileStream(leer, FileMode.Open))
             {
@@ -59,8 +59,14 @@ namespace Lab4_Compresion.Lectura
                 }
             }
             Probabilidad();
-            Compresion.Compresion.Instance.asignar(leer);
             ArbolHuffman.Arbol Arbol = new ArbolHuffman.Arbol(Ocurrencia);
+            var DicTablaPrefijos = Arbol.CrearArbol();
+            Compresion.Compresion Comprimir = new Compresion.Compresion(leer,nombre);
+            Comprimir.Comprimir(DicTablaPrefijos);
+
+
+
+
         }
         public void Probabilidad()
         {
@@ -74,7 +80,7 @@ namespace Lab4_Compresion.Lectura
                 elementos.probabilidad = Convert.ToDouble((cantidad / Frecuencia.Count()));
                 Ocurrencia.Add(elementos);            
             }
-                Compresion.Compresion.Instance.Ocurrencia = elementos_enviar;
+            
         }
     }
 }

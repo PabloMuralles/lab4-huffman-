@@ -16,10 +16,10 @@ namespace Lab4_Compresion.ArbolHuffman
         public Arbol(List<Elementos> TablaProbabilidadesLectura)
         {
             TablaProbabilidades = TablaProbabilidadesLectura;
-            CrearArbol();   
+        
         }
 
-        public void CrearArbol()
+        public Dictionary<string, string> CrearArbol()
         {
             foreach (var item in TablaProbabilidades)
             {
@@ -53,7 +53,8 @@ namespace Lab4_Compresion.ArbolHuffman
 
             }
             Recorrido(Raiz);
-            Compresion.Compresion.Instance.Comprimir(TablaPrefijos);
+            return TablaPrefijos;
+            
         }
 
         public void Recorrido(Nodo raiz)
