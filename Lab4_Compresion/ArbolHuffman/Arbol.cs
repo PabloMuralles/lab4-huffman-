@@ -16,9 +16,7 @@ namespace Lab4_Compresion.ArbolHuffman
         public Arbol(List<Elementos> TablaProbabilidadesLectura)
         {
             TablaProbabilidades = TablaProbabilidadesLectura;
-            CrearArbol();
-           
-
+            CrearArbol();   
         }
 
         public void CrearArbol()

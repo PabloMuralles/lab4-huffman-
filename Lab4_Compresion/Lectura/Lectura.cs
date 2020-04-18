@@ -7,11 +7,7 @@ using System.IO;
 namespace Lab4_Compresion.Lectura
 {
     public class Lectura
-    {
-
-         
-        
-      
+    { 
          Dictionary<char, int> elementos_enviar = new Dictionary<char, int>();
 
         private Dictionary<char, Caracteres> diccionario = new Dictionary<char, Caracteres>();
@@ -39,8 +35,7 @@ namespace Lab4_Compresion.Lectura
 
         }
         public void Ingresar(string leer)
-        {
-           
+        { 
             using (var stream = new FileStream(leer, FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream))

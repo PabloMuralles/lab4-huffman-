@@ -10,8 +10,6 @@ namespace Lab4_Compresion.ArbolHuffman
         public char Caracter { get; set; }
 
         public string Prefijo { get; set; }
-
-
-
+         
     }
 }
