@@ -58,6 +58,7 @@ namespace Lab4_Compresion.Compresion
 
                             foreach (var item in Buffer)
                             {
+                                var jaja = Convert.ToChar(item);
                                 var caracter = Convert.ToString(Convert.ToChar(item));
                                 if (lectura.ContainsKey(caracter))
                                 {
@@ -76,7 +77,7 @@ namespace Lab4_Compresion.Compresion
                                 }
                             }
                         }
-                        if (CadenaBits.Length <= 8 )
+                        if (CadenaBits.Length <= 8 && CadenaBits != "")
                         {
                             Escritura.Write(Convert.ToByte(Convert.ToInt32(CadenaBits, 2)));
                         }

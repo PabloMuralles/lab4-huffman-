@@ -35,6 +35,8 @@ namespace Lab4_Compresion.Descomprecion
                 {
                     using (var Escritura = new BinaryWriter(Archivo))
                     {
+                        var Texto = string.Empty;
+
                         var Probabilidades = new List<ArbolHuffman.Elementos>();
 
                         var Verficacion = new List<char>();
@@ -103,7 +105,7 @@ namespace Lab4_Compresion.Descomprecion
                                     if (Indices.Values.Contains(CadenaEvaluarAux))
                                     {
                                         var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                                        Escritura.Write(Convert.ToByte(Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key)));
+                                        Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
                                         CadenaEvaluarAux = string.Empty;
                                     }
                                     else
@@ -112,12 +114,20 @@ namespace Lab4_Compresion.Descomprecion
                                         CadenaEvalucar = CadenaEvalucar.Substring(1);
                                     }
                                 }
+                                
 
 
-                            }
+                            } 
+                        }
+                        if (CadenaEvaluarAux.Length != 0)
+                        {
+                            var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                            Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                        }
 
-
-
+                        foreach (var item in Texto)
+                        {
+                            Escritura.Write(Convert.ToByte(Convert.ToChar(item)));
                         }
 
                        
