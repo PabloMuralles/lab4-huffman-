@@ -16,6 +16,8 @@ namespace Lab4_Compresion.Lectura
 
         List<ArbolHuffman.Elementos> Ocurrencia = new List<ArbolHuffman.Elementos>();
 
+        List<char> Verificacion = new List<char>();
+
 
         ArbolHuffman.Elementos elementos = null;
 
@@ -61,8 +63,8 @@ namespace Lab4_Compresion.Lectura
             Probabilidad();
             ArbolHuffman.Arbol Arbol = new ArbolHuffman.Arbol(Ocurrencia);
             var DicTablaPrefijos = Arbol.CrearArbol();
-            Compresion.Compresion Comprimir = new Compresion.Compresion(leer,nombre);
-            Comprimir.Comprimir(DicTablaPrefijos);
+            Compresion.Compresion Comprimir = new Compresion.Compresion(leer,nombre );
+            Comprimir.Comprimir(DicTablaPrefijos, Ocurrencia);
 
 
 
@@ -77,8 +79,9 @@ namespace Lab4_Compresion.Lectura
                 elementos.caracter = item.Key;
                 elementos.cantidad = Convert.ToInt32(cantidad);
                 elementos_enviar.Add(elementos.caracter,elementos.cantidad);
-                elementos.probabilidad = Convert.ToDouble((cantidad / Frecuencia.Count()));
-                Ocurrencia.Add(elementos);            
+                elementos.probabilidad = Convert.ToDouble((cantidad));
+                Ocurrencia.Add(elementos);
+                Verificacion.Add(item.Key);
             }
             
         }

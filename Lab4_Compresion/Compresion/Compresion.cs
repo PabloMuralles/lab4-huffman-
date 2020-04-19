@@ -18,7 +18,7 @@ namespace Lab4_Compresion.Compresion
             Archivo = new FileStream(path, FileMode.Open);
             NombreNuevo = NombreArchivo;
         }
-        public void Comprimir(Dictionary<string, string> lectura)
+        public void Comprimir(Dictionary<string, string> lectura, List<ArbolHuffman.Elementos> Frecuencia)
         {
             string CarpetaCompress = Environment.CurrentDirectory;
 
@@ -35,12 +35,19 @@ namespace Lab4_Compresion.Compresion
                     {
                         Escritura.Write(Encoding.UTF8.GetBytes(Convert.ToString(lectura.Count).PadLeft(8, '0').ToArray()));
 
-                        foreach (var item in lectura)
+                        var contador = 0;
+                        foreach (var item in Frecuencia)
                         {
-                            Escritura.Write(item.Key);
-                            var Auxiliar = item.Value;
+                            if (contador==28)
+                            {
+
+                            }
+                            Escritura.Write(Convert.ToByte(item.caracter));
+                            var Auxiliar = Convert.ToString(item.probabilidad);
                             Auxiliar += "|";
-                            Escritura.Write(Auxiliar);
+                            var hoo = Auxiliar.ToCharArray();
+                            Escritura.Write(Auxiliar.ToCharArray());
+                            contador++;
                         }
                         var CadenaBits = string.Empty;
                         var Buffer = new byte[10000];
@@ -68,10 +75,10 @@ namespace Lab4_Compresion.Compresion
                                     }
                                 }
                             }
-                            if (CadenaBits.Length <= 8 )
-                            {
-                                Escritura.Write(CadenaBits);
-                            }
+                        }
+                        if (CadenaBits.Length <= 8 )
+                        {
+                            Escritura.Write(Convert.ToByte(Convert.ToInt32(CadenaBits, 2)));
                         }
                     }
                 } 

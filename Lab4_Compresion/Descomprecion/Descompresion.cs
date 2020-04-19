@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace Lab4_Compresion.Descomprecion
 {
@@ -11,17 +12,9 @@ namespace Lab4_Compresion.Descomprecion
         string NombreArchivo = string.Empty;
          
         string TextoDescomprimir = string.Empty;
-
          
-
         Dictionary<string, string> Caracteres = new Dictionary<string, string>();
-
-        List<Frecuencias> Frecuencias = new List<Frecuencias>();
-
-
-
-
-
+         
         public Descompresion(string nombrearchivocontrolller, string leercontroller)
         {
             NombreArchivo = nombrearchivocontrolller;
@@ -29,44 +22,112 @@ namespace Lab4_Compresion.Descomprecion
         }
         public void Descomprimir(string leer)
         {
-          
-            StreamReader TextLeer = new StreamReader(leer);
-            var Texto = TextLeer.ReadLine();
+            string CarpetaCompress = Environment.CurrentDirectory;
 
-            while (Texto != null)
+            if (!Directory.Exists(Path.Combine(CarpetaCompress, "DecompressHuffman")))
             {
-                if(Texto.Substring(0, 1) == "0" || Texto.Substring(0, 1) == "1")
-                {
-
-                    TextoDescomprimir = Texto.Trim();
-                }
-                else
-                {
-                    Texto = Texto.Trim().Replace("[", " ").Replace("]", " ");
-                    var Caracter = Texto.Split(',');
-                    Caracteres.Add(Caracter[0], Caracter[1]);
-                }
-                Texto = TextLeer.ReadLine();
+                Directory.CreateDirectory(Path.Combine(CarpetaCompress, "DecompressHuffman"));
             }
-            foreach (var item in Caracteres)
+            var ArchivoLeer = new FileStream(leer,FileMode.Open);
+            using (var Lecturas = new BinaryReader(ArchivoLeer))
             {
-                string CaracterFrecuencia;
-                Frecuencias NuevaFrecuencias = new Frecuencias();
-                int FrecuenciaDiccionario = Convert.ToInt32(item.Value);
-                if (item.Key == "  ")
+                using (var Archivo = new FileStream(Path.Combine(CarpetaCompress, "DecompressHuffman",$"{NombreArchivo}.txt"), FileMode.OpenOrCreate))
                 {
-                    CaracterFrecuencia = item.Key;
-                }
-                else
-                {
-                    CaracterFrecuencia = item.Key.Trim();
-                }
-                Frecuencias.Add(new Frecuencias { Caracter = CaracterFrecuencia, Frecuencia = FrecuenciaDiccionario });
+                    using (var Escritura = new BinaryWriter(Archivo))
+                    {
+                        var Probabilidades = new List<ArbolHuffman.Elementos>();
 
+                        var Verficacion = new List<char>();
+
+                        var CantidadDeCaracteres = Lecturas.ReadBytes(8);
+
+                        var ContadorCaracteres = Convert.ToInt32(Encoding.UTF8.GetString(CantidadDeCaracteres));
+
+                        var TamañoBuffer = 10000;
+
+                        var buffer = new byte[TamañoBuffer];
+
+                        TamañoBuffer = 1;
+
+                        for (int i = 0; i < ContadorCaracteres; i++)
+                        {
+                           
+                            buffer = Lecturas.ReadBytes(TamañoBuffer);
+
+                            var Caracter = Convert.ToChar(buffer[0]);
+
+                            buffer = Lecturas.ReadBytes(TamañoBuffer);
+
+                            var ProbabilidadCaracter = string.Empty;
+
+                            while (Convert.ToChar(buffer[0]) != '|')
+                            {
+                                ProbabilidadCaracter += Convert.ToString(Convert.ToChar(buffer[0]));
+
+                                buffer = Lecturas.ReadBytes(TamañoBuffer);
+                                 
+                            }
+
+                            Probabilidades.Add(new ArbolHuffman.Elementos { caracter = Caracter, probabilidad = Convert.ToDouble(ProbabilidadCaracter)});
+
+                            Verficacion.Add(Caracter);
+
+                            
+                        }
+
+                        ArbolHuffman.Arbol NuevoArbol = new ArbolHuffman.Arbol(Probabilidades);
+
+                        var Indices = NuevoArbol.CrearArbol();
+
+                        TamañoBuffer = 10000;
+
+                        var CadenaEvalucar = string.Empty;
+
+                        var CadenaEvaluarAux = string.Empty;
+
+                        while (Lecturas.BaseStream.Position != Lecturas.BaseStream.Length)
+                        {
+                            buffer = Lecturas.ReadBytes(TamañoBuffer);
+
+                            foreach (var item in buffer)
+                            {
+                                var preuba = Convert.ToChar(item);
+                                var NumeroNormal  = Convert.ToInt32(Convert.ToString(item));
+                                var NumeroBinario = Convert.ToString(NumeroNormal, 2).PadLeft(8,'0');
+
+                                CadenaEvalucar += NumeroBinario;
+                                 
+
+                                while (CadenaEvalucar.Length > 0)
+                                {
+                                    if (Indices.Values.Contains(CadenaEvaluarAux))
+                                    {
+                                        var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                        Escritura.Write(Convert.ToByte(Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key)));
+                                        CadenaEvaluarAux = string.Empty;
+                                    }
+                                    else
+                                    {
+                                        CadenaEvaluarAux += CadenaEvalucar.Substring(0, 1);
+                                        CadenaEvalucar = CadenaEvalucar.Substring(1);
+                                    }
+                                }
+
+
+                            }
+
+
+
+                        }
+
+                       
+
+                        
+
+
+                    }
+                }
             }
-
-            Arbol arbol = new Arbol(Frecuencias,NombreArchivo,TextoDescomprimir);
-
-        }    
+        }
     }
 }
