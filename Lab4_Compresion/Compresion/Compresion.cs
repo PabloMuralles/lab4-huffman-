@@ -29,9 +29,9 @@ namespace Lab4_Compresion.Compresion
 
             using (var LecturaArchivo = new BinaryReader(Archivo))
             {
-                using (var Archivo = new FileStream(Path.Combine(CarpetaCompress, "CompressHuffman",$"{NombreNuevo}.huff"),FileMode.OpenOrCreate))
+                using (var ArchivoEscritura = new FileStream(Path.Combine(CarpetaCompress, "CompressHuffman",$"{NombreNuevo}.huff"),FileMode.OpenOrCreate))
                 {
-                    using (var Escritura = new BinaryWriter(Archivo))
+                    using (var Escritura = new BinaryWriter(ArchivoEscritura))
                     {
                         Escritura.Write(Encoding.UTF8.GetBytes(Convert.ToString(lectura.Count).PadLeft(8, '0').ToArray()));
 
@@ -50,36 +50,49 @@ namespace Lab4_Compresion.Compresion
                             contador++;
                         }
                         var CadenaBits = string.Empty;
-                        var Buffer = new byte[10000];
+                        int longitud = Convert.ToInt32(LecturaArchivo.BaseStream.Length - LecturaArchivo.BaseStream.Position);
+                        var Buffer = new byte[longitud];
 
-                        while (LecturaArchivo.BaseStream.Position != LecturaArchivo.BaseStream.Length)
+                        
+                        Buffer = LecturaArchivo.ReadBytes(longitud);
+
+                       
+
+                        var contador334 = 0;
+
+                        foreach ( var item in Buffer)
                         {
-                            Buffer = LecturaArchivo.ReadBytes(10000);
+                                
+                            var jaja = Convert.ToChar(item);
+                            var caracter = Convert.ToString(Convert.ToChar(item));
+                                  
 
-                            foreach (var item in Buffer)
+                            if (contador334==11449)
                             {
-                                var jaja = Convert.ToChar(item);
-                                var caracter = Convert.ToString(Convert.ToChar(item));
-                                if (lectura.ContainsKey(caracter))
-                                {
-                                    lectura.TryGetValue(caracter, out var prefijo);
+                                        
 
-                                    CadenaBits += prefijo;
-                                    if ((CadenaBits.Length / 8) != 0)
-                                    {
-                                        for (int i = 0; i < CadenaBits.Length / 8; i++)
-                                        {
-                                            var CadenaBitsAux = CadenaBits.Substring(0, 8);
-                                            Escritura.Write(Convert.ToByte(Convert.ToInt32(CadenaBitsAux,2)));
-                                            CadenaBits = CadenaBits.Substring(8);
-                                        }
-                                    }
+                            }
+                            lectura.TryGetValue(caracter, out var prefijo);
+
+                            CadenaBits += prefijo;
+                            if (CadenaBits.Length >= 8)
+                            {
+                                var cantidad = CadenaBits.Length / 8;
+                                for (int i = 0; i < cantidad; i++)
+                                {
+                             
+                                    Escritura.Write(Convert.ToByte(Convert.ToInt32((CadenaBits.Substring(0,8)),2)));
+                                    CadenaBits = CadenaBits.Substring(8);
                                 }
                             }
+                            
+                            contador334++;
                         }
+                        
                         if (CadenaBits.Length <= 8 && CadenaBits != "")
                         {
-                            Escritura.Write(Convert.ToByte(Convert.ToInt32(CadenaBits, 2)));
+                            var Nuevo = CadenaBits.PadRight(8, '0');
+                            Escritura.Write(Convert.ToByte(Convert.ToInt32(Nuevo, 2)));
                         }
                     }
                 } 

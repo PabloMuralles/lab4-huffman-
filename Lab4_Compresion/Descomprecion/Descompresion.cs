@@ -81,48 +81,52 @@ namespace Lab4_Compresion.Descomprecion
 
                         var Indices = NuevoArbol.CrearArbol();
 
-                        TamañoBuffer = 10000;
+                        TamañoBuffer = Convert.ToInt32(Lecturas.BaseStream.Length- Lecturas.BaseStream.Position);
 
                         var CadenaEvalucar = string.Empty;
 
                         var CadenaEvaluarAux = string.Empty;
 
-                        while (Lecturas.BaseStream.Position != Lecturas.BaseStream.Length)
+                     
+                        buffer = Lecturas.ReadBytes(TamañoBuffer);
+                        var contador = 0;
+                        foreach (var item in buffer)
                         {
-                            buffer = Lecturas.ReadBytes(TamañoBuffer);
 
-                            foreach (var item in buffer)
+                            if (contador == 6390)
                             {
-                                var preuba = Convert.ToChar(item);
-                                var NumeroNormal  = Convert.ToInt32(Convert.ToString(item));
-                                var NumeroBinario = Convert.ToString(NumeroNormal, 2).PadLeft(8,'0');
 
-                                CadenaEvalucar += NumeroBinario;
+                            }
+                            var preuba = Convert.ToChar(item);
+                            var NumeroNormal  = Convert.ToInt32(Convert.ToString(item));
+                            var NumeroBinario = Convert.ToString(NumeroNormal, 2).PadLeft(8,'0');
+
+                            CadenaEvalucar += NumeroBinario;
                                  
 
-                                while (CadenaEvalucar.Length > 0)
+                            while (CadenaEvalucar.Length > 0)
+                            {
+                                if (Indices.Values.Contains(CadenaEvaluarAux))
                                 {
-                                    if (Indices.Values.Contains(CadenaEvaluarAux))
-                                    {
-                                        var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                                        Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                                        CadenaEvaluarAux = string.Empty;
-                                    }
-                                    else
-                                    {
-                                        CadenaEvaluarAux += CadenaEvalucar.Substring(0, 1);
-                                        CadenaEvalucar = CadenaEvalucar.Substring(1);
-                                    }
+                                    var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                    Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                    CadenaEvaluarAux = string.Empty;
                                 }
-                                
+                                else
+                                {
+                                    CadenaEvaluarAux += CadenaEvalucar.Substring(0, 1);
+                                    CadenaEvalucar = CadenaEvalucar.Substring(1);
+                                }
+                            }
 
+                            contador++;
 
-                            } 
-                        }
+                        } 
+                        
                         if (CadenaEvaluarAux.Length != 0)
                         {
-                            var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                            Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                            //var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                            //Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
                         }
 
                         foreach (var item in Texto)
