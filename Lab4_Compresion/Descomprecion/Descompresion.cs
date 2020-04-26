@@ -81,58 +81,74 @@ namespace Lab4_Compresion.Descomprecion
 
                         var Indices = NuevoArbol.CrearArbol();
 
-                        TamañoBuffer = Convert.ToInt32(Lecturas.BaseStream.Length- Lecturas.BaseStream.Position);
+                        //TamañoBuffer = Convert.ToInt32( Lecturas.BaseStream.Length - Lecturas.BaseStream.Position);
+
+                        TamañoBuffer = 10000;
 
                         var CadenaEvalucar = string.Empty;
 
                         var CadenaEvaluarAux = string.Empty;
 
-                     
-                        buffer = Lecturas.ReadBytes(TamañoBuffer);
-                        var contador = 0;
-                        foreach (var item in buffer)
+                        buffer = new byte[TamañoBuffer];
+
+                        while (Lecturas.BaseStream.Position != Lecturas.BaseStream.Length)
                         {
+                                buffer = Lecturas.ReadBytes(TamañoBuffer);
 
-                            if (contador == 6390)
+
+                            //var caracteres = 0;
+                 
+                            foreach (var item in buffer)
                             {
+                                //if (caracteres ==504412 )
+                                //{
 
-                            }
-                            var preuba = Convert.ToChar(item);
-                            var NumeroNormal  = Convert.ToInt32(Convert.ToString(item));
-                            var NumeroBinario = Convert.ToString(NumeroNormal, 2).PadLeft(8,'0');
+                                //}
 
-                            CadenaEvalucar += NumeroBinario;
+                                var NumeroNormal  = Convert.ToInt32(Convert.ToString(item));
+                                var NumeroBinario = Convert.ToString(NumeroNormal, 2).PadLeft(8,'0');
+
+                                CadenaEvalucar += NumeroBinario;
                                  
 
-                            while (CadenaEvalucar.Length > 0)
-                            {
-                                if (Indices.Values.Contains(CadenaEvaluarAux))
+                                while (CadenaEvalucar.Length > 0)
                                 {
-                                    var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                                    Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                                    CadenaEvaluarAux = string.Empty;
+                                    if (Indices.Values.Contains(CadenaEvaluarAux))
+                                    {
+                                        //var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                        //Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                        var caracter = (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                        //Texto += caracter;
+                                        Escritura.Write(Convert.ToByte(Convert.ToChar(caracter)));
+                                        CadenaEvaluarAux = string.Empty;
+                                    }
+                                    else
+                                    {
+                                        CadenaEvaluarAux += CadenaEvalucar.Substring(0, 1);
+                                        CadenaEvalucar = CadenaEvalucar.Substring(1);
+                                    }
                                 }
-                                else
-                                {
-                                    CadenaEvaluarAux += CadenaEvalucar.Substring(0, 1);
-                                    CadenaEvalucar = CadenaEvalucar.Substring(1);
-                                }
+
+                                //caracteres++;
+
                             }
 
-                            contador++;
-
-                        } 
-                        
+                        }
                         if (CadenaEvaluarAux.Length != 0)
                         {
-                            //var revision = Convert.ToChar(Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
-                            //Texto += (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                            if (Indices.Values.Contains(CadenaEvaluarAux))
+                            {
+                                
+                                var Caracter = (Indices.FirstOrDefault(x => x.Value == CadenaEvaluarAux).Key);
+                                Escritura.Write(Convert.ToByte(Convert.ToChar(Caracter)));
+
+                            }
                         }
 
-                        foreach (var item in Texto)
-                        {
-                            Escritura.Write(Convert.ToByte(Convert.ToChar(item)));
-                        }
+                        //foreach (var item in Texto)
+                        //{
+                        //    Escritura.Write(Convert.ToByte(Convert.ToChar(item)));
+                        //}
 
                        
 
